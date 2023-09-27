@@ -25,6 +25,7 @@ const Client = () => {
     const [text, setText] = useState('');
     const [loading, setLoading] = useState(false);
     const [messages, setMessages] = useState([]);
+    const scrollChatBubbleRef = useRef(null);
 
 
     const reset = (new_prompt) => {
@@ -77,6 +78,12 @@ const Client = () => {
             reset('The conversation has timed out, please enter your name and email if you would like to seek for support.');
         })
     }, [])
+
+    useEffect(() => {
+        if (scrollChatBubbleRef.current) {
+            scrollChatBubbleRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    },[messages])
 
 
     useEffect(() => {
@@ -154,6 +161,8 @@ const Client = () => {
                                         </Flex>
                                     )
                                 }
+                                <Box ref={scrollChatBubbleRef}>
+                                </Box>
 
                                 </VStack>
                                 <Spacer/>
