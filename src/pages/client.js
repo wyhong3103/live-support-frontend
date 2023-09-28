@@ -26,6 +26,7 @@ const Client = () => {
     const [loading, setLoading] = useState(false);
     const [messages, setMessages] = useState([]);
     const scrollChatBubbleRef = useRef(null);
+    const api_url = process.env.NEXT_PUBLIC_API_URL;
 
 
     const reset = (new_prompt) => {
@@ -49,7 +50,7 @@ const Client = () => {
     }
     
     useEffect(() => {
-        socket = io("http://localhost:3000");
+        socket = io(api_url);
 
         socket.on('receive_assigned', (payload) => {
             if (payload.clientId === socket.id){
@@ -103,7 +104,7 @@ const Client = () => {
                 <PopoverCloseButton />
                 <PopoverHeader>
                     <Heading size='md'>
-                        SUPPORT
+                        Support
                     </Heading>
                 </PopoverHeader>
                 <PopoverBody>

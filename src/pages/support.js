@@ -99,7 +99,7 @@ const Support = () => {
 
     const getSessions = async (init = false) => {
         const res = await fetch(
-            'http://localhost:3000/agent/sessions',
+            `${api_url}/agent/sessions`,
             {
                 method: 'POST', 
                 headers: {
@@ -176,7 +176,7 @@ const Support = () => {
     }
 
     useEffect(() => {
-        socket = io("http://localhost:3000");
+        socket = io(api_url);
 
         socket.on('receive_assigned', async (payload) => {
             if (payload.agentId === socket.id){

@@ -76,7 +76,7 @@ const Mid = () => {
     }
 
     useEffect(() => {
-        socket = io("http://localhost:3000");
+        socket = io(api_url);
 
         socket.on('receive_queue', (payload) => {
             const q = payload.queue;
