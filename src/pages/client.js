@@ -26,6 +26,7 @@ const Client = () => {
     const [text, setText] = useState('');
     const [loading, setLoading] = useState(false);
     const [messages, setMessages] = useState([]);
+    const [countDown, setCountDown] = useState(0);
     const scrollChatBubbleRef = useRef(null);
     const api_url = process.env.NEXT_PUBLIC_API_URL;
 
@@ -57,6 +58,7 @@ const Client = () => {
             if (payload.clientId === socket.id){
                 setLoading(false);
                 setRoomId(payload.roomId)
+                setMessages([]);
                 socket.emit('join_room', payload.roomId);
             }
         })
@@ -82,8 +84,18 @@ const Client = () => {
     }, [])
 
     useEffect(() => {
+        setCountDown(5 * 60)
+
+        let intervalId = setInterval(() => {
+        setCountDown((prevTime) => Math.max(0, prevTime - 1));
+        }, 1000);
+
         if (scrollChatBubbleRef.current) {
             scrollChatBubbleRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        return () => {
+            clearInterval(intervalId);
         }
     },[messages])
 
@@ -168,12 +180,19 @@ const Client = () => {
 
                                 </VStack>
                                 <Spacer/>
-                                <HStack>
-                                    <Input placeholder='Enter your text' value={text} onChange={(e) => (setText(e.target.value))}/>
-                                    <Button onClick={submit}>
-                                        Send
-                                    </Button>
-                                </HStack>
+                                <VStack position='relative' py='5px'>
+                                    <HStack>
+                                        <Input placeholder='Enter your text' value={text} onChange={(e) => (setText(e.target.value))}/>
+                                        <Button onClick={submit}>
+                                            Send
+                                        </Button>
+                                    </HStack>
+                                    <Box w='100%' position='absolute' bottom='-15px' left='2px'>
+                                        <Text fontSize={'11px'}>
+                                            Timeout: {Math.floor(countDown/60)}:{countDown%60 <= 9 ? '0' : null}{countDown%60}
+                                        </Text>
+                                    </Box>
+                                </VStack>
                             </Flex>
                             )
                         }
