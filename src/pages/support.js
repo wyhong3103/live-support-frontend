@@ -1,3 +1,4 @@
+import {v4} from 'uuid';
 import { Box, Input, Center, Button, VStack, InputGroup, Text, HStack, Heading, Spacer, Flex } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
@@ -241,6 +242,7 @@ const Support = () => {
                         {
                             sessions.map(i => 
                                 <Flex p='10px' bg='white' w='100%'
+                                key={v4()}
                                  _hover={{bg:'#EEE', transition: 'all 0.2s', cursor: 'pointer'}}  
                                  onClick={() => changeRoom(i.roomId)}
                                  borderRadius={'10px'}
@@ -267,7 +269,7 @@ const Support = () => {
                                 {
                                     messages.map(
                                         i => 
-                                        <Flex direction='row' w='100%'>
+                                        <Flex direction='row' w='100%' key={v4()}>
                                             {
                                                 i.author === 'AGT' ?
                                                 <Spacer/>

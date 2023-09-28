@@ -1,3 +1,4 @@
+import {v4} from 'uuid';
 import {
     Modal,
     ModalOverlay,
@@ -147,7 +148,7 @@ const Mid = () => {
                             {
                                 queue.map(
                                     i =>
-                                    <Flex w='100%' justify={'center'} align='center' p='10px' bg='white' borderRadius='10px'>
+                                    <Flex w='100%' justify={'center'} align='center' p='10px' bg='white' borderRadius='10px' key={v4()}>
                                         <Text>
                                             {i.name}
                                         </Text>

@@ -1,3 +1,4 @@
+import {v4} from 'uuid';
 import {
     Popover,
     PopoverTrigger,
@@ -143,7 +144,7 @@ const Client = () => {
                                 {
                                     messages.map(
                                         i => 
-                                        <Flex direction='row' w='100%'>
+                                        <Flex direction='row' w='100%' key={v4()}>
                                             {
                                                 i.author === 'USR' ?
                                                 <Spacer/>
