@@ -37,6 +37,7 @@ const Mid = () => {
             body: JSON.stringify({
                 email,
                 password,
+                type: 'MID'
             })
         });
 

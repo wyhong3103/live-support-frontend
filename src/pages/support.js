@@ -33,6 +33,7 @@ const Support = () => {
             body: JSON.stringify({
                 email,
                 password,
+                type: 'SPT'
             })
         });
 
