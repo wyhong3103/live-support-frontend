@@ -25,6 +25,7 @@ const Mid = () => {
     const [agentCount, setAgentCount] = useState(0);
     const selectedId = useRef('');
     const [loginStatus, setLoginStatus] = useState(0);
+    const [loginErrorMessage, setLoginErrorMessage] = useState('');
     const [radioValue, setRadioValue] = useState('1')
     const { isOpen, onOpen, onClose } = useDisclosure()
     const api_url = process.env.NEXT_PUBLIC_API_URL;
@@ -42,12 +43,13 @@ const Mid = () => {
             })
         });
 
+        const data = await res.json();
+
         if (!res.ok){
             setLoginStatus(1);
+            setLoginErrorMessage(data.message);
             return;
         }
-
-        const data = await res.json();
 
         socket.emit('mid_agent_on', {id: data.id});
         setLoginStatus(2);
@@ -131,14 +133,23 @@ const Mid = () => {
         {
             loginStatus <= 1? 
             <Center h='100vh' w='100vw'>
-                <VStack gap='20px'>
+                <VStack gap='20px' w='300px'>
                     <Heading size='md'>
-                        Middleman Login
+                        Middle Agent Login
                     </Heading>
-                    <VStack gap='10px'>
+                    <VStack gap='10px' w='100%'>
                         <Input isInvalid={loginStatus === 1} placeholder='email' value={email} onChange={(e) => (setEmail(e.target.value))}/>
                         <Input isInvalid={loginStatus === 1} placeholder='password' type='password' value={password} onChange={(e) => (setPassword(e.target.value))}/>
                     </VStack>
+                    {
+                        loginStatus === 1 ? 
+
+                        <Text color='red' maxW='100%'>
+                            {loginErrorMessage}
+                        </Text>
+                        : 
+                        null
+                    }
                     <Button onClick={login} w='100%'>
                         Login
                     </Button>
