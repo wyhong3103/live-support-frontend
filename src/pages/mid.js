@@ -22,6 +22,7 @@ const Mid = () => {
     const [botUrl, setBotUrl] = useState('');
     const [botAuthToken, setBotAuthToken] = useState('');
     const [queue, setQueue] = useState([]);
+    const [agentCount, setAgentCount] = useState(0);
     const selectedId = useRef('');
     const [loginStatus, setLoginStatus] = useState(0);
     const [radioValue, setRadioValue] = useState('1')
@@ -84,7 +85,15 @@ const Mid = () => {
             const q = payload.queue;
             setQueue([...q]);
         })
+
+        socket.on('receive_agent_count', (payload) => {
+            setAgentCount(payload);
+        })
     },[])
+
+    useState(() => {
+        if (agentCount === 0) setRadioValue('2');
+    },[agentCount])
 
     return(
         <>
@@ -96,7 +105,7 @@ const Mid = () => {
             <ModalBody>
                 <RadioGroup onChange={setRadioValue} value={radioValue}>
                     <Flex gap='20px' direction='column'>
-                        <Radio value='1'>To Live Agent</Radio>
+                        <Radio value='1' isDisabled={agentCount === 0}>To Live Agent</Radio>
                         <VStack gap='10px' w='250px'>
                             <Radio value='2' w='100%'>To GPT Bot</Radio>
                             <Input placeholder='GPT URL' isDisabled={radioValue!=='2'} value={botUrl} onChange={(e) => (setBotUrl(e.target.value))}/>
@@ -107,7 +116,7 @@ const Mid = () => {
             </ModalBody>
 
             <ModalFooter>
-                <Button colorScheme='blue' mr={3} onClick={assign}>
+                <Button colorScheme='blue' mr={3} onClick={assign} isDisabled={agentCount === 0 && radioValue === '1'}>
                     Assign
                 </Button>
                 <Button variant='ghost' onClick={() => {
@@ -141,7 +150,9 @@ const Mid = () => {
                     <Heading w='100%' size='md'>
                         Customers Queue
                     </Heading>
-
+                    <Text w='100%'>
+                        Active Agent Count: {agentCount}
+                    </Text>
                     {
                         queue.length > 0 ?
 
@@ -156,6 +167,7 @@ const Mid = () => {
                                         <Spacer/>
                                         <Button onClick={() => {
                                             selectedId.current = i.id;
+                                            setRadioValue(agentCount === 0 ? '2' : '1');
                                             onOpen();
                                         }}>
                                             Assign
