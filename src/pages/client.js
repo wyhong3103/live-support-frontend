@@ -110,7 +110,7 @@ const Client = () => {
         <Box h='100vh' w='100vw' position='relative'>
             <Popover>
             <PopoverTrigger>
-                <Button position='absolute' bottom='20px' right='20px'>Trigger</Button>
+                <Button position='absolute' bottom='20px' right='20px'>Live Support</Button>
             </PopoverTrigger>
             <PopoverContent>
                 <PopoverArrow />
